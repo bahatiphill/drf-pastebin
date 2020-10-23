@@ -18,14 +18,28 @@
 #from rest_framework.response import Response
 #from rest_framework import status
 
+#from snippets.models import Snippet
+#from snippets.serializers import SnippetSerializer
+#from rest_framework import mixins
+#from rest_framework import generics
+
 from snippets.models import Snippet
 from snippets.serializers import SnippetSerializer
-from rest_framework import mixins
 from rest_framework import generics
 
 # Create your views here.
 
+class SnippetList(generics.ListCreateAPIView):
+    queryset = Snippet.objects.all()
+    serializer_class = SnippetSerializer
 
+class SnippetDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Snippet.objects.all()
+    serializer_class = SnippetSerializer
+
+
+
+'''
 class SnippetList(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.GenericAPIView):
     queryset = Snippet.objects.all()
     serializer_class = SnippetSerializer
@@ -49,7 +63,7 @@ class SnippetDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.D
 
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
-
+'''
 
 '''
 class SnippetList(APIView):
