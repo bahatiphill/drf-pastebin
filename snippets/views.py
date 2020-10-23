@@ -11,16 +11,47 @@
 #from snippets.models import Snippet
 #from snippets.serializers import SnippetSerializer
 
+#from snippets.models import Snippet
+#from snippets.serializers import SnippetSerializer
+#from django.http import Http404
+#from rest_framework.views import APIView
+#from rest_framework.response import Response
+#from rest_framework import status
+
 from snippets.models import Snippet
 from snippets.serializers import SnippetSerializer
-from django.http import Http404
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import mixins
+from rest_framework import generics
 
 # Create your views here.
 
 
+class SnippetList(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.GenericAPIView):
+    queryset = Snippet.objects.all()
+    serializer_class = SnippetSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+
+class SnippetDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView):
+    queryset = Snippet.objects.all()
+    serializer_class = SnippetSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+
+
+'''
 class SnippetList(APIView):
     """
     List all snippets, or create a new snippet
@@ -66,7 +97,7 @@ class SnippetDetail(APIView):
         snippet = get_object(pk)
         snippet.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
+'''
 
 '''
 @api_view(['GET', 'POST'])
